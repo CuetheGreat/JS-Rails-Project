@@ -1,9 +1,24 @@
 <!DOCTYPE html>
 <html>
+
 <head>
   <script src="index.js"></script>
+  <link rel="stylesheet" href="style.css">
 </head>
-<body>
 
+<body>
+  <div id="title">
+  <h1>Pet Meal Tracker</h1>
+  </div>
+  <div id="form-area" hidden>
+    <form id="new-pet-form" action="http://127.0.0.1:3000/pets" method="post" >
+      <label for="name">Name</label>
+      <input id="name" type="text" class="field">
+      <button class="btn btn-primary">Submit</button>
+    </form>
+  </div>
+<button id="show-form-button">Add New Puppy</button>
+<div id="pets"></div>
 </body>
+
 </html>
