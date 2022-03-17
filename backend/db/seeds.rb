@@ -34,5 +34,5 @@ pet_names.each_with_index do |name, index|
 end
 
 Meal.all.each_with_index do |meal, index|
-  PetMeal.create(meal: meal, pet: Pet.find(index + 1))
+  PetMeal.create(meal: meal, pet: Pet.find_by(id: (10 - index)))
 end
