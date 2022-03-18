@@ -23,6 +23,23 @@ dog_meals.each_with_index do |meal, index|
 end
 
 pet_names = %w[Bella Luna Lucy Daizy Zoe Lily Lola Bailey Stella Molly]
+pet_imge = [
+  'https://images.dog.ceo/breeds/bulldog-english/jager-2.jpg',
+  'https://images.dog.ceo/breeds/finnish-lapphund/mochilamvan.jpg',
+  'https://images.dog.ceo/breeds/australian-shepherd/pepper.jpg',
+  'https://images.dog.ceo/breeds/brabancon/n02112706_107.jpg',
+  'https://images.dog.ceo/breeds/havanese/00100trPORTRAIT_00100_BURST20191103202017556_COVER.jpg',
+  'https://images.dog.ceo/breeds/spaniel-irish/n02102973_2209.jpg',
+  'https://images.dog.ceo/breeds/frise-bichon/stevebaxter_bichon_frise.jpg',
+  'https://images.dog.ceo/breeds/hound-blood/n02088466_7004.jpg',
+  'https://images.dog.ceo/breeds/terrier-norwich/n02094258_73.jpg',
+  'https://images.dog.ceo/breeds/retriever-flatcoated/n02099267_2121.jpg',
+  'https://images.dog.ceo/breeds/affenpinscher/n02110627_3144.jpg',
+  'https://images.dog.ceo/breeds/bulldog-english/murphy.jpg',
+  'https://images.dog.ceo/breeds/poodle-standard/n02113799_2466.jpg',
+  'https://images.dog.ceo/breeds/havanese/00100trPORTRAIT_00100_BURST20191112123933390_COVER.jpg',
+  'https://images.dog.ceo/breeds/terrier-silky/n02097658_8053.jpg'
+]
 
 pet_names.each_with_index do |name, index|
   Pet.create(name: name, age: rand(1...9), kind: 'Dog',
@@ -30,7 +47,8 @@ pet_names.each_with_index do |name, index|
                        'Pitbull'
                      else
                        ((index % 3).zero? ? 'Rottwilder' : 'Golden Retriever')
-                     end))
+                     end),
+             image: pet_imge[index])
 end
 
 Meal.all.each_with_index do |meal, index|

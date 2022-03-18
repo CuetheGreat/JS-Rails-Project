@@ -14,11 +14,19 @@
     <form id="new-pet-form" action="http://127.0.0.1:3000/pets" method="post" >
       <label for="name">Name</label>
       <input id="name" type="text" class="field">
-      <button class="btn btn-primary">Submit</button>
+      <label for="age">Age</label>
+      <input id="age" type="number" class="field">
+      <label for="kind">Kind</label>
+      <input id="kind" type="text" class="field">
+      <label for="breed">Breed</label>
+      <input id="breed" type="text" class="field">
+      <label for="image">Image Url:</label>
+      <input id="image" type="text" class="field">
+      <button class="submit-form-btn">Submit</button>
     </form>
   </div>
-<button id="show-form-button">Add New Puppy</button>
-<div id="pets"></div>
+<button id="show-form-btn">Add New Puppy</button>
+<div id="pets-container"></div>
 </body>
 
 </html>

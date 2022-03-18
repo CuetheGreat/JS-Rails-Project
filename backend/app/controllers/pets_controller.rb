@@ -10,7 +10,8 @@ class PetsController < ApplicationController
   end
 
   def create
-    puts params
+    pet = Pet.create(pets_params)
+    render json: PetsSerializer.new(pet).to_serialized_json
   end
 
   def update; end
@@ -19,5 +20,7 @@ class PetsController < ApplicationController
 
   private
 
-  def pets_params; end
+  def pets_params
+    params.require(:pet).permit(:name, :age, :breed, :kind, :image)
+  end
 end
