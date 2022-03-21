@@ -137,9 +137,11 @@ class Pet {
 class Meal {
   constructor (meal) {
     this.id = meal.id
+    this.name = meal.name
     this.kind = meal.kind
     this.quantity = meal.quantity
     this.measure = meal.measure
+    this.course = meal.course
   }
 
   static fetchMealsFor = async pet => {
@@ -149,14 +151,28 @@ class Meal {
   }
 
   createCard () {
-    if (this.name !== '') {
       let mealCard = document.createElement('div')
       mealCard.id = 'meal-card'
       mealCard.className = this.id
 
       let items = []
 
-      let name = document.createElement('h3')
+      let course = document.createElement('h3')
+      course.innerHTML = `Name: ${this.course}`
+      items.push(course)
+
+      let img = document.createElement('img')
+      if (this.course === 'Breakfast') {
+        img.src = ' https://cdn-icons-png.flaticon.com/512/3168/3168628.png'
+      } else if (this.course === 'Lunch') {
+        img.src = 'https://cdn-icons-png.flaticon.com/512/2082/2082045.png'
+      } else {
+        img.src =
+          'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSOivoby6uBpvMUQyAFIKBPUxHrT9rOJvLvMA&usqp=CAU'
+      }
+      items.push(img)
+
+      let name = document.createElement('h4')
       name.innerHTML = `Name: ${this.name}`
       items.push(name)
 
@@ -171,7 +187,7 @@ class Meal {
       for (const item of items) {
         mealCard.appendChild(item)
       }
-    }
+
 
     return mealCard
   }
