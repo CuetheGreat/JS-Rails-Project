@@ -47,17 +47,15 @@ document.addEventListener('DOMContentLoaded', () => {
 
       let meals = Meal.fetchMealsFor(pet)
       meals.then(meal_objs => {
-      for(const meal_obj of meal_objs){
-        let meal = new Meal(meal_objs)
+        for (const meal_obj of meal_objs) {
+          let meal = new Meal(meal_obj)
 
-        let container = document.querySelector(`.pet_id_${pet.id}`)
-            container.append(meal.createCard())
+          let container = document.querySelector(`#pet_id_${pet.id}`)
+          container.appendChild(meal.createCard())
         }
       })
 
-
       // Create Container for pet divs
-
     }
   })
 })
@@ -85,8 +83,6 @@ class Pet {
       .then(res => res.json())
       .catch(error => console.log(error.message))
   }
-
-
 
   createContainer () {
     let container = document.createElement('div')
@@ -131,14 +127,42 @@ class Pet {
 class Meal {
   constructor (meal) {
     this.id = meal.id
+    this.kind = meal.kind
+    this.quantity = meal.quantity
+    this.measure = meal.measure
   }
 
-  static fetchMealsFor = async (pet) => {
-  return fetch(`http://127.0.0.1:3000/pets/${pet.id}/meals`)
-    .then(res => res.json())
-    .catch(error => console.log(error.message))
-}
+  static fetchMealsFor = async pet => {
+    return fetch(`http://127.0.0.1:3000/pets/${pet.id}/meals`)
+      .then(res => res.json())
+      .catch(error => console.log(error.message))
+  }
 
+  createCard () {
+    let mealCard = document.createElement('div')
+    mealCard.id = 'meal-card'
+    mealCard.className = this.id
+
+    let items = []
+
+    let name = document.createElement('h3')
+    name.innerHTML = `Name: ${this.name}`
+    items.push(name)
+
+    let kind = document.createElement('p')
+    kind.innerHTML = `Breed: ${this.kind}`
+    items.push(kind)
+
+    let quantity = document.createElement('p')
+    quantity.innerHTML = `${this.quantity} ${this.measure}`
+    items.push(quantity)
+
+    for (const item of items) {
+      mealCard.appendChild(item)
+    }
+
+    return mealCard
+  }
 }
 
 class PetMeal {
