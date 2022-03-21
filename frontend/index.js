@@ -21,8 +21,6 @@ document.addEventListener('DOMContentLoaded', () => {
       image: e.target.elements[4].value
     }
 
-    console.log(pet_object)
-
     options = {
       method: 'POST',
       headers: {
@@ -32,9 +30,23 @@ document.addEventListener('DOMContentLoaded', () => {
       body: JSON.stringify(pet_object)
     }
 
-    fetch('http://127.0.0.1:3000/pets', options).then(res => {
-      return res.json()
-    })
+    fetch('http://127.0.0.1:3000/pets', options)
+      .then(res => res.json())
+      .then(obj => {
+        let pet = new Pet(obj)
+        petContainter = document.querySelector('.pets-container')
+        petContainter.appendChild(pet.createContainer())
+
+        let meals = Meal.fetchMealsFor(pet)
+        meals.then(meal_objs => {
+          for (const meal_obj of meal_objs) {
+            let meal = new Meal(meal_obj)
+
+            let container = document.querySelector(`#pet_id_${pet.id}`)
+            container.appendChild(meal.createCard())
+          }
+        })
+      })
   })
 
   let pets = Pet.fetchAllPets()
@@ -54,8 +66,6 @@ document.addEventListener('DOMContentLoaded', () => {
           container.appendChild(meal.createCard())
         }
       })
-
-      // Create Container for pet divs
     }
   })
 })
@@ -139,35 +149,30 @@ class Meal {
   }
 
   createCard () {
-    let mealCard = document.createElement('div')
-    mealCard.id = 'meal-card'
-    mealCard.className = this.id
+    if (this.name !== '') {
+      let mealCard = document.createElement('div')
+      mealCard.id = 'meal-card'
+      mealCard.className = this.id
 
-    let items = []
+      let items = []
 
-    let name = document.createElement('h3')
-    name.innerHTML = `Name: ${this.name}`
-    items.push(name)
+      let name = document.createElement('h3')
+      name.innerHTML = `Name: ${this.name}`
+      items.push(name)
 
-    let kind = document.createElement('p')
-    kind.innerHTML = `Breed: ${this.kind}`
-    items.push(kind)
+      let kind = document.createElement('p')
+      kind.innerHTML = `Breed: ${this.kind}`
+      items.push(kind)
 
-    let quantity = document.createElement('p')
-    quantity.innerHTML = `${this.quantity} ${this.measure}`
-    items.push(quantity)
+      let quantity = document.createElement('p')
+      quantity.innerHTML = `${this.quantity} ${this.measure}`
+      items.push(quantity)
 
-    for (const item of items) {
-      mealCard.appendChild(item)
+      for (const item of items) {
+        mealCard.appendChild(item)
+      }
     }
 
     return mealCard
-  }
-}
-
-class PetMeal {
-  constructor (pet, meal) {
-    this.pet = new Pet(pet)
-    this.meal = new Meal(meal)
   }
 }
