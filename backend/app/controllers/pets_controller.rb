@@ -14,9 +14,17 @@ class PetsController < ApplicationController
     render json: PetsSerializer.new(pet).to_serialized_json
   end
 
-  def update; end
+  def update
+    pet = Pet.find_by(id: params[:id])
+    pet.update(pets_params)
+    render json: PetsSerializer.new(pet).to_serialized_json
+  end
 
-  def destroy; end
+  def destroy
+    pet = Pet.find_by(id: prams[:id])
+    pet.destroy
+    render body: nil, status: :no_content
+  end
 
   private
 

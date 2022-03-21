@@ -1,16 +1,4 @@
 document.addEventListener('DOMContentLoaded', () => {
-  body = document.querySelector('body')
-
-  fetch('http://127.0.0.1:3000/pets')
-    .then(res => res.json())
-    .then(pets => {
-      for (const pet of pets) {
-        petContainer = document.getElementById('pets-container')
-        let pet_obj = new Pet(pet)
-        petContainer.appendChild(pet_obj.createCard(document))
-      }
-    })
-
   formButton = document.querySelector('#show-form-btn')
   formButton.addEventListener('click', e => {
     formField = document.querySelector('#form-area')
@@ -22,10 +10,9 @@ document.addEventListener('DOMContentLoaded', () => {
   })
 
   petForm = document.querySelector('form')
-  let formData = new FormData(petForm)
-
   petForm.addEventListener('submit', e => {
     e.preventDefault()
+
     pet_object = {
       name: e.target.elements[0].value,
       age: e.target.elements[1].value,
@@ -36,18 +23,42 @@ document.addEventListener('DOMContentLoaded', () => {
 
     console.log(pet_object)
 
-    options ={
+    options = {
       method: 'POST',
       headers: {
-        'Accept': 'application/json',
+        Accept: 'application/json',
         'Content-Type': 'application/json'
       },
       body: JSON.stringify(pet_object)
     }
 
-    fetch( 'http://127.0.0.1:3000/pets' , options)
-      .then(res => console.log(res.json()))
+    fetch('http://127.0.0.1:3000/pets', options).then(res => {
+      return res.json()
+    })
+  })
 
+  let pets = Pet.fetchAllPets()
+  pets.then(objs => {
+    for (const obj of objs) {
+      let pet = new Pet(obj)
+
+      petContainter = document.querySelector('.pets-container')
+      petContainter.appendChild(pet.createContainer())
+
+      let meals = Meal.fetchMealsFor(pet)
+      meals.then(meal_objs => {
+      for(const meal_obj of meal_objs){
+        let meal = new Meal(meal_objs)
+
+        let container = document.querySelector(`.pet_id_${pet.id}`)
+            container.append(meal.createCard())
+        }
+      })
+
+
+      // Create Container for pet divs
+
+    }
   })
 })
 
@@ -61,7 +72,32 @@ class Pet {
     this.img = pet.image
   }
 
-  createCard (document) {
+  static find_by_id = async id => {
+    return await fetch(`http://127.0.0.1:3000/pets/${id}`)
+      .then(res => res.json())
+      .then(obj => {
+        return new Pet(obj)
+      })
+  }
+
+  static fetchAllPets = async () => {
+    return fetch(`http://127.0.0.1:3000/pets/`)
+      .then(res => res.json())
+      .catch(error => console.log(error.message))
+  }
+
+
+
+  createContainer () {
+    let container = document.createElement('div')
+    container.className = 'container'
+    container.id = `pet_id_${this.id}`
+    // append pet card to container
+    container.appendChild(this.createCard())
+    return container
+  }
+
+  createCard () {
     let petCard = document.createElement('div')
     petCard.id = 'pet-card'
     petCard.className = this.id
@@ -93,7 +129,16 @@ class Pet {
 }
 
 class Meal {
-  constructor (meal) {}
+  constructor (meal) {
+    this.id = meal.id
+  }
+
+  static fetchMealsFor = async (pet) => {
+  return fetch(`http://127.0.0.1:3000/pets/${pet.id}/meals`)
+    .then(res => res.json())
+    .catch(error => console.log(error.message))
+}
+
 }
 
 class PetMeal {
