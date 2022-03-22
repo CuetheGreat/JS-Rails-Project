@@ -1,4 +1,5 @@
 document.addEventListener('DOMContentLoaded', () => {
+// Toggle Visibiity of the add pet form
   petFormButton = document.querySelector('#toggle-pet-form-btn')
   petFormButton.addEventListener('click', e => {
     formField = document.querySelector('#pet-form-area')
@@ -7,12 +8,12 @@ document.addEventListener('DOMContentLoaded', () => {
       ? 'Add New Puppy'
       : 'Cancel Adding New Puppy'
   })
-
+  // Handle the result of pet creation
   petForm = document.querySelector('form')
   petForm.addEventListener('submit', e => {
     e.preventDefault()
     console.log(e.target.elements)
-
+    // create pet object from form
     pet_object = {
       name: e.target.elements[0].value,
       age: e.target.elements[1].value,
@@ -52,32 +53,28 @@ document.addEventListener('DOMContentLoaded', () => {
       },
       body: JSON.stringify(pet_object)
     }
-    console.log(options)
-
-    fetch('http://127.0.0.1:3000/pets', options)
-      .then(res => res.json())
+    // post request to pets api
+    Pet.createPet(options)
       .then(obj => {
         let pet = new Pet(obj)
         petContainter = document.querySelector('.pets-container')
         petContainter.appendChild(pet.createContainer())
-
         let meals = Meal.fetchMealsFor(pet)
         meals.then(meal_objs => {
           for (const meal_obj of meal_objs) {
             let meal = new Meal(meal_obj)
-
             let container = document.querySelector(`#pet_id_${pet.id}`)
             container.appendChild(meal.createCard())
           }
         })
       })
       .then(() => {
+      // ads delete function to newley created elements
         Pet.addDeleteFunction()
       })
   })
 
-  let pets = Pet.fetchAllPets()
-  pets
+  Pet.fetchAllPets()
     .then(objs => {
       for (const obj of objs) {
         let pet = new Pet(obj)
@@ -136,6 +133,11 @@ class Pet {
         }).catch( error => console.log(error.message))
       })
     })
+  }
+
+  static createPet = async (options) => {
+    return await fetch('http://127.0.0.1:3000/pets', options).then(res => res.json())
+
   }
 
   createContainer () {

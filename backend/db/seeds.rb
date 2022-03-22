@@ -534,14 +534,13 @@ dog_breeds = [
   'Yorkshire Terrier'
 ]
 
-2.times do
+10.times do
   pet = Pet.create(name: dog_names.sample, age: rand(1...9), kind: 'Dog', breed: dog_breeds.sample,
                    image: pet_image.sample)
-
-  meal = Meal.create(name: food_brands.sample, kind: %w[wet dry].sample, quantity: rand(0.5...3.0),
-                     measure: %w[cups lb].sample, course: 'Breakfast', pet: pet)
-  meal2 = Meal.create(name: food_brands.sample, kind: %w[wet dry].sample, quantity: rand(0.5...3.0),
-                      measure: %w[cups lb].sample, course: 'Lunch', pet: pet)
-  meal3 = Meal.create(name: food_brands.sample, kind: %w[wet dry].sample, quantity: rand(0.5...3.0),
-                      measure: %w[cups lb].sample, course: 'Dinner', pet: pet)
+  Meal.create(name: food_brands.sample, kind: %w[wet dry].sample, quantity: rand(0.5...3.0),
+              measure: %w[cups lb].sample, course: 'Breakfast', pet: pet)
+  Meal.create(name: food_brands.sample, kind: %w[wet dry].sample, quantity: rand(0.5...3.0),
+              measure: %w[cups lb].sample, course: 'Lunch', pet: pet)
+  Meal.create(name: food_brands.sample, kind: %w[wet dry].sample, quantity: rand(0.5...3.0),
+              measure: %w[cups lb].sample, course: 'Dinner', pet: pet)
 end
