@@ -534,7 +534,7 @@ dog_breeds = [
   'Yorkshire Terrier'
 ]
 
-30.times do
+2.times do
   meal = Meal.create(name: food_brands.sample, kind: %w[wet dry].sample, quantity: rand(0.5...3.0),
                      measure: %w[cups lb].sample, course: 'Breakfast')
   meal2 = Meal.create(name: food_brands.sample, kind: %w[wet dry].sample, quantity: rand(0.5...3.0),
