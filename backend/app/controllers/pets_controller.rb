@@ -21,8 +21,11 @@ class PetsController < ApplicationController
   end
 
   def destroy
-    pet = Pet.find_by(id: prams[:id])
+    pet = Pet.find_by(id: params[:id])
+
+    pet.meals.each(&:destroy)
     pet.destroy
+
     render body: nil, status: :no_content
   end
 

@@ -8,25 +8,119 @@
 
 <body>
   <div id="title">
-  <h1>Pet Meal Tracker</h1>
+    <h1>Pet Meal Tracker</h1>
   </div>
-  <div id="form-area" hidden>
-    <form id="new-pet-form" action="http://127.0.0.1:3000/pets" method="post" >
-      <label for="name">Name</label>
-      <input id="name" type="text" class="field">
-      <label for="age">Age</label>
-      <input id="age" type="number" class="field">
-      <label for="kind">Kind</label>
-      <input id="kind" type="text" class="field">
-      <label for="breed">Breed</label>
-      <input id="breed" type="text" class="field">
-      <label for="image">Image Url:</label>
-      <input id="image" type="text" class="field">
+  <div id="pet-form-area" hidden>
+    <form id="new-pet-form">
+      <div id="'pet-info" class="form-area">
+      <h3>Pet Info</h3>
+        <div>
+          <label for="name">Name</label>
+          <input id="name" type="text" class="field">
+        </div>
+        <div>
+          <label for="age">Age</label>
+          <input id="age" type="number" class="field">
+        </div>
+        <div>
+          <label for="kind">Kind</label>
+          <input id="kind" type="text" class="field">
+        </div>
+        <div>
+          <label for="breed">Breed</label>
+          <input id="breed" type="text" class="field">
+        </div>
+        <div>
+          <label for="image">Image Url:</label>
+          <input id="image" type="text" class="field">
+        </div>
+      </div>
+      <!--  Meal fields  -->
+
+      <div id="meal-info-1" class="form-area">
+        <h3>Breakfast</h3>
+        <div>
+          <label for="name">Name</label>
+          <input id="name" type="text" class="field">
+        </div>
+        <div>
+          <label for="kind">Kind: </label>
+          <select id="kind" class="field">
+            <option value='Wet'>Wet</option>
+            <option value='Dry'>Dry</option>
+          </select>
+        </div>
+        <div>
+          <label for="quantity">Quantity: </label>
+          <input id="quantity" type="number" class="field">
+        </div>
+        <div>
+          <label for="measure">Measure:</label>
+          <select id="measure" class="field">
+            <option value='Cups'>Cups</option>
+            <option value='Ounces'>Ounces</option>
+            <option value='Lbs'>Lbs</option>
+          </select>
+        </div>
+      </div>
+      <div id="meal-info-2" class="form-area">
+        <h3>Lunch</h3>
+        <div>
+          <label for="name">Name</label>
+          <input id="name" type="text" class="field">
+        </div>
+        <div>
+          <label for="kind">Kind: </label>
+          <select id="kind" class="field">
+            <option value='Wet'>Wet</option>
+            <option value='Dry'>Dry</option>
+          </select>
+        </div>
+        <div>
+          <label for="quantity">Quantity: </label>
+          <input id="quantity" type="number" class="field">
+        </div>
+        <div>
+          <label for="measure">Measure:</label>
+          <select id="measure" class="field">
+            <option value='Cups'>Cups</option>
+            <option value='Ounces'>Ounces</option>
+            <option value='Lbs'>Lbs</option>
+          </select>
+        </div>
+      </div>
+      <div id="meal-info-3" class="form-area">
+        <h3>Dinner</h3>
+        <div>
+          <label for="name">Name</label>
+          <input id="name" type="text" class="field">
+        </div>
+        <div>
+          <label for="kind">Kind: </label>
+          <select id="kind" class="field">
+            <option value='Wet'>Wet</option>
+            <option value='Dry'>Dry</option>
+          </select>
+        </div>
+        <div>
+          <label for="quantity">Quantity: </label>
+          <input id="quantity" type="number" class="field">
+        </div>
+        <div>
+          <label for="measure">Measure:</label>
+          <select id="measure" class="field">
+            <option value='Cups'>Cups</option>
+            <option value='Ounces'>Ounces</option>
+            <option value='Lbs'>Lbs</option>
+          </select>
+        </div>
+      </div>
       <button class="submit-form-btn">Submit</button>
     </form>
   </div>
-<button id="show-form-btn">Add New Puppy</button>
-<div class="pets-container"></div>
+
+  <button id="toggle-pet-form-btn">Add New Puppy</button>
+  <div class="pets-container"></div>
 </body>
 
 </html>

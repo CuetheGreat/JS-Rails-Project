@@ -1,10 +1,9 @@
 document.addEventListener('DOMContentLoaded', () => {
-  formButton = document.querySelector('#show-form-btn')
-  formButton.addEventListener('click', e => {
-    formField = document.querySelector('#form-area')
-
+  petFormButton = document.querySelector('#toggle-pet-form-btn')
+  petFormButton.addEventListener('click', e => {
+    formField = document.querySelector('#pet-form-area')
     formField.hidden = !formField.hidden
-    formButton.innerHTML = formField.hidden
+    petFormButton.innerHTML = formField.hidden
       ? 'Add New Puppy'
       : 'Cancel Adding New Puppy'
   })
@@ -47,27 +46,30 @@ document.addEventListener('DOMContentLoaded', () => {
           }
         })
       })
+      .then( () => { Pet.addDeleteFunction()})
   })
 
   let pets = Pet.fetchAllPets()
-  pets.then(objs => {
-    for (const obj of objs) {
-      let pet = new Pet(obj)
+  pets
+    .then(objs => {
+      for (const obj of objs) {
+        let pet = new Pet(obj)
 
-      petContainter = document.querySelector('.pets-container')
-      petContainter.appendChild(pet.createContainer())
+        petContainter = document.querySelector('.pets-container')
+        petContainter.appendChild(pet.createContainer())
 
-      let meals = Meal.fetchMealsFor(pet)
-      meals.then(meal_objs => {
-        for (const meal_obj of meal_objs) {
-          let meal = new Meal(meal_obj)
+        let meals = Meal.fetchMealsFor(pet)
+        meals.then(meal_objs => {
+          for (const meal_obj of meal_objs) {
+            let meal = new Meal(meal_obj)
 
-          let container = document.querySelector(`#pet_id_${pet.id}`)
-          container.appendChild(meal.createCard())
-        }
-      })
-    }
-  })
+            let container = document.querySelector(`#pet_id_${pet.id}`)
+            container.appendChild(meal.createCard())
+          }
+        })
+      }
+    })
+    .then(() => {Pet.addDeleteFunction()})
 })
 
 class Pet {
@@ -83,15 +85,36 @@ class Pet {
   static find_by_id = async id => {
     return await fetch(`http://127.0.0.1:3000/pets/${id}`)
       .then(res => res.json())
-      .then(obj => {
-        return new Pet(obj)
-      })
+      .then(obj => new Pet(obj))
   }
 
   static fetchAllPets = async () => {
     return fetch(`http://127.0.0.1:3000/pets/`)
       .then(res => res.json())
       .catch(error => console.log(error.message))
+  }
+
+  static addDeleteFunction () {
+    const buttons = document.querySelectorAll('.delete-pet')
+    buttons.forEach(btn => {
+      btn.addEventListener('click', e => {
+        const parent = e.target.parentNode
+
+        const options = {
+          method: 'DELETE',
+          headers: {
+            Accept: 'application/json',
+            'Content-Type': 'application/json'
+          }
+        }
+
+        fetch(`http://127.0.0.1:3000/pets/${parent.className}`, options).then(
+          () => {
+            parent.parentNode.remove()
+          }
+        )
+      })
+    })
   }
 
   createContainer () {
@@ -129,6 +152,10 @@ class Pet {
     for (const item of items) {
       petCard.appendChild(item)
     }
+    let deleteButton = document.createElement('button')
+    deleteButton.className = 'delete-pet'
+    deleteButton.innerHTML = 'Delete Pet'
+    petCard.appendChild(deleteButton)
 
     return petCard
   }
@@ -151,43 +178,38 @@ class Meal {
   }
 
   createCard () {
-      let mealCard = document.createElement('div')
-      mealCard.id = 'meal-card'
-      mealCard.className = this.id
+    let mealCard = document.createElement('div')
+    mealCard.id = 'meal-card'
+    mealCard.className = this.id
 
-      let items = []
+    let items = []
 
-      let course = document.createElement('h3')
-      course.innerHTML = `Name: ${this.course}`
-      items.push(course)
+    let course = document.createElement('h3')
+    course.innerHTML = `Name: ${this.course}`
+    mealCard.append(course)
 
-      let img = document.createElement('img')
-      if (this.course === 'Breakfast') {
-        img.src = ' https://cdn-icons-png.flaticon.com/512/3168/3168628.png'
-      } else if (this.course === 'Lunch') {
-        img.src = 'https://cdn-icons-png.flaticon.com/512/2082/2082045.png'
-      } else {
-        img.src =
-          'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSOivoby6uBpvMUQyAFIKBPUxHrT9rOJvLvMA&usqp=CAU'
-      }
-      items.push(img)
+    let img = document.createElement('img')
+    if (this.course === 'Breakfast') {
+      img.src = ' https://cdn-icons-png.flaticon.com/512/3168/3168628.png'
+    } else if (this.course === 'Lunch') {
+      img.src = 'https://cdn-icons-png.flaticon.com/512/2082/2082045.png'
+    } else {
+      img.src =
+        'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSOivoby6uBpvMUQyAFIKBPUxHrT9rOJvLvMA&usqp=CAU'
+    }
+    mealCard.append(img)
 
-      let name = document.createElement('h4')
-      name.innerHTML = `Name: ${this.name}`
-      items.push(name)
+    let name = document.createElement('h4')
+    name.innerHTML = `Name: ${this.name}`
+    mealCard.append(name)
 
-      let kind = document.createElement('p')
-      kind.innerHTML = `Breed: ${this.kind}`
-      items.push(kind)
+    let kind = document.createElement('p')
+    kind.innerHTML = `Breed: ${this.kind}`
+    mealCard.append(kind)
 
-      let quantity = document.createElement('p')
-      quantity.innerHTML = `${this.quantity} ${this.measure}`
-      items.push(quantity)
-
-      for (const item of items) {
-        mealCard.appendChild(item)
-      }
-
+    let quantity = document.createElement('p')
+    quantity.innerHTML = `${this.quantity} ${this.measure}`
+    mealCard.append(quantity)
 
     return mealCard
   }
