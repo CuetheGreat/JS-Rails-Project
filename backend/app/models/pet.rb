@@ -1,4 +1,4 @@
 class Pet < ApplicationRecord
-  has_many :pet_meals
-  has_many :meals, through: :pet_meals
+  has_many :meals
+  accepts_nested_attributes_for :meals, reject_if: ->(attributes) { attributes['name'].blank? }
 end

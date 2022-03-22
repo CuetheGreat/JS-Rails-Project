@@ -22,16 +22,13 @@ class PetsController < ApplicationController
 
   def destroy
     pet = Pet.find_by(id: params[:id])
-
-    pet.meals.each(&:destroy)
     pet.destroy
-
-    render body: nil, status: :no_content
   end
 
   private
 
   def pets_params
-    params.require(:pet).permit(:name, :age, :breed, :kind, :image)
+    params.require(:pet).permit(:name, :age, :breed, :kind, :image,
+                                meals_attributes: %i[course name kind quantity measure])
   end
 end

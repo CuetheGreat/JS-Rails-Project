@@ -5,6 +5,7 @@ class CreateMeals < ActiveRecord::Migration[7.0]
       t.string :kind
       t.float :quantity
       t.string :measure
+      t.integer :pet_id
 
       t.timestamps
     end

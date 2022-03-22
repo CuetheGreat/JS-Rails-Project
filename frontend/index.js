@@ -11,13 +11,37 @@ document.addEventListener('DOMContentLoaded', () => {
   petForm = document.querySelector('form')
   petForm.addEventListener('submit', e => {
     e.preventDefault()
+    console.log(e.target.elements)
 
     pet_object = {
       name: e.target.elements[0].value,
       age: e.target.elements[1].value,
       kind: e.target.elements[2].value,
       breed: e.target.elements[3].value,
-      image: e.target.elements[4].value
+      image: e.target.elements[4].value,
+      meals_attributes: [
+        {
+          course: e.target.elements[5].value,
+          name: e.target.elements[6].value,
+          kind: e.target.elements[7].value,
+          quantity: e.target.elements[8].value,
+          measure: e.target.elements[9].value
+        },
+        {
+          course: e.target.elements[10].value,
+          name: e.target.elements[11].value,
+          kind: e.target.elements[12].value,
+          quantity: e.target.elements[13].value,
+          measure: e.target.elements[14].value
+        },
+        {
+          course: e.target.elements[15].value,
+          name: e.target.elements[16].value,
+          kind: e.target.elements[17].value,
+          quantity: e.target.elements[18].value,
+          measure: e.target.elements[19].value
+        }
+      ]
     }
 
     options = {
@@ -28,6 +52,7 @@ document.addEventListener('DOMContentLoaded', () => {
       },
       body: JSON.stringify(pet_object)
     }
+    console.log(options)
 
     fetch('http://127.0.0.1:3000/pets', options)
       .then(res => res.json())
@@ -46,7 +71,9 @@ document.addEventListener('DOMContentLoaded', () => {
           }
         })
       })
-      .then( () => { Pet.addDeleteFunction()})
+      .then(() => {
+        Pet.addDeleteFunction()
+      })
   })
 
   let pets = Pet.fetchAllPets()
@@ -69,7 +96,9 @@ document.addEventListener('DOMContentLoaded', () => {
         })
       }
     })
-    .then(() => {Pet.addDeleteFunction()})
+    .then(() => {
+      Pet.addDeleteFunction()
+    })
 })
 
 class Pet {
@@ -94,25 +123,17 @@ class Pet {
       .catch(error => console.log(error.message))
   }
 
-  static addDeleteFunction () {
+  static addDeleteFunction = () => {
     const buttons = document.querySelectorAll('.delete-pet')
     buttons.forEach(btn => {
-      btn.addEventListener('click', e => {
+      btn.addEventListener('click', async e => {
         const parent = e.target.parentNode
 
-        const options = {
-          method: 'DELETE',
-          headers: {
-            Accept: 'application/json',
-            'Content-Type': 'application/json'
-          }
-        }
-
-        fetch(`http://127.0.0.1:3000/pets/${parent.className}`, options).then(
-          () => {
-            parent.parentNode.remove()
-          }
-        )
+        await fetch(`http://127.0.0.1:3000/pets/${parent.className}`, {
+          method: 'DELETE'
+        }).then(obj => {
+          parent.parentNode.remove()
+        }).catch( error => console.log(error.message))
       })
     })
   }

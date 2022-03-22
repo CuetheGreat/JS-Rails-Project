@@ -16,18 +16,10 @@ ActiveRecord::Schema[7.0].define(version: 2022_03_21_200910) do
     t.string "kind"
     t.float "quantity"
     t.string "measure"
+    t.integer "pet_id"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.string "course"
-  end
-
-  create_table "pet_meals", force: :cascade do |t|
-    t.integer "pet_id", null: false
-    t.integer "meal_id", null: false
-    t.datetime "created_at", null: false
-    t.datetime "updated_at", null: false
-    t.index ["meal_id"], name: "index_pet_meals_on_meal_id"
-    t.index ["pet_id"], name: "index_pet_meals_on_pet_id"
   end
 
   create_table "pets", force: :cascade do |t|
@@ -40,6 +32,4 @@ ActiveRecord::Schema[7.0].define(version: 2022_03_21_200910) do
     t.string "image"
   end
 
-  add_foreign_key "pet_meals", "meals"
-  add_foreign_key "pet_meals", "pets"
 end

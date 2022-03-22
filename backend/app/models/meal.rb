@@ -1,7 +1,5 @@
 class Meal < ApplicationRecord
-  has_many :pet_meals
-  has_many :pets, through: :pet_meals
-
+  belongs_to :pet
   before_create :round_up
 
   private
